@@ -17,8 +17,22 @@ public class Game {
   private final List<Card> playerHand = new ArrayList<>();
 
   public static void main(String[] args) {
-    Game game = new Game();
+    welcomeMessage();
+    startGame();
+    resetScreen();
+  }
 
+  private static void startGame() {
+    Game game = new Game();
+    game.initialDeal();
+    game.play();
+  }
+
+  private static void resetScreen() {
+    System.out.println(ansi().reset());
+  }
+
+  private static void welcomeMessage() {
     System.out.println(ansi()
                            .bgBright(Ansi.Color.WHITE)
                            .eraseScreen()
@@ -26,12 +40,6 @@ public class Game {
                            .fgGreen().a("Welcome to")
                            .fgRed().a(" Jitterted's")
                            .fgBlack().a(" BlackJack"));
-
-
-    game.initialDeal();
-    game.play();
-
-    System.out.println(ansi().reset());
   }
 
   public Game() {
@@ -41,12 +49,20 @@ public class Game {
   public void initialDeal() {
 
     // deal first round of cards, players first
-    playerHand.add(deck.draw());
-    dealerHand.add(deck.draw());
+    playerHits();
+    dealerDrawsCard();
 
     // deal next round of cards
-    playerHand.add(deck.draw());
+    playerHits();
+    dealerDrawsCard();
+  }
+
+  private void dealerDrawsCard() {
     dealerHand.add(deck.draw());
+  }
+
+  private void playerHits() {
+    playerHand.add(deck.draw());
   }
 
   public void play() {
@@ -59,7 +75,7 @@ public class Game {
         break;
       }
       if (playerChoice.startsWith("h")) {
-        playerHand.add(deck.draw());
+        playerHits();
         if (handValueOf(playerHand) > 21) {
           playerBusted = true;
         }
@@ -71,7 +87,7 @@ public class Game {
     // Dealer makes its choice automatically based on a simple heuristic (<=16, hit, 17>stand)
     if (!playerBusted) {
       while (handValueOf(dealerHand) <= 16) {
-        dealerHand.add(deck.draw());
+        dealerDrawsCard();
       }
     }
 
