@@ -71,12 +71,12 @@ public class Game {
     while (!playerBusted) {
       displayGameState();
       String playerChoice = inputFromPlayer().toLowerCase();
-      if (playerChoice.startsWith("s")) {
+      if (playerChoseToStand(playerChoice)) {
         break;
       }
-      if (playerChoice.startsWith("h")) {
+      if (playerChoseToHit(playerChoice)) {
         playerHits();
-        if (handValueOf(playerHand) > 21) {
+        if (isPlayerBusted()) {
           playerBusted = true;
         }
       } else {
@@ -104,6 +104,18 @@ public class Game {
     } else {
       System.out.println("You lost to the Dealer. 💸");
     }
+  }
+
+  private boolean isPlayerBusted() {
+    return handValueOf(playerHand) > 21;
+  }
+
+  private boolean playerChoseToHit(String playerChoice) {
+    return playerChoice.startsWith("h");
+  }
+
+  private boolean playerChoseToStand(String playerChoice) {
+    return playerChoice.startsWith("s");
   }
 
   public int handValueOf(List<Card> hand) {
