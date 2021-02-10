@@ -16,8 +16,9 @@ public class HandValueAceTest {
                        new Card(DUMMY_SUIT, "5"));
     Hand hand = new Hand(cards);
 
-    assertThat(hand.value())
-        .isEqualTo(11 + 5);
+    assertThat(hand.valueIsEqualTo(11 + 5))
+        .describedAs(hand.displayHandValue())
+        .isTrue();
   }
 
   @Test

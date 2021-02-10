@@ -20,7 +20,7 @@ public class Hand {
     cards.add(deck.draw());
   }
 
-  public int value() {
+  int value() {
     int handValue = cards
         .stream()
         .mapToInt(Card::rankValue)
@@ -48,5 +48,29 @@ public class Hand {
 
   public Card firstCard() {
     return cards.get(0);
+  }
+
+  public boolean isBusted() {
+    return value() > 21;
+  }
+
+  public boolean pushes(Hand hand) {
+    return value() == hand.value();
+  }
+
+  public boolean beats(Hand hand) {
+    return hand.value() < value();
+  }
+
+  public String displayHandValue() {
+    return " (" + value() + ")";
+  }
+
+  public boolean dealerShouldHit() {
+    return value() <= 16;
+  }
+
+  public boolean valueIsEqualTo(int value) {
+    return value == value();
   }
 }
